@@ -1,3 +1,4 @@
+
 @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap');
 
 :root {
@@ -9,6 +10,7 @@
     --text: #f5f7ff;
     --muted: #a0abc2;
     --border: #28334b;
+    --success: #86efac;
 }
 
 * {
@@ -25,7 +27,8 @@ body {
     font-family: 'Cairo', sans-serif;
 }
 
-button, input {
+button,
+input {
     font: inherit;
 }
 
@@ -33,10 +36,17 @@ button {
     cursor: pointer;
 }
 
+button:disabled,
+input:disabled {
+    cursor: not-allowed;
+    opacity: 0.55;
+}
+
 .navbar {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    gap: 15px;
     padding: 20px 7%;
     border-bottom: 1px solid var(--border);
     background: #090d18cc;
@@ -59,11 +69,11 @@ button {
     width: 38px;
     height: 38px;
     border-radius: 12px;
-    background: linear-gradient(135deg, #8b5cf6, #3b82f6);
+    background: linear-gradient(135deg, var(--purple), #3b82f6);
 }
 
 .status {
-    color: #86efac;
+    color: var(--success);
     font-size: 13px;
 }
 
@@ -77,7 +87,8 @@ button {
     text-align: center;
 }
 
-.tag, .eyebrow {
+.tag,
+.eyebrow {
     color: #bba4ff;
     font-size: 12px;
     letter-spacing: 2px;
@@ -94,8 +105,9 @@ button {
     color: #a78bfa;
 }
 
-.hero p, .section-label {
+.hero p {
     color: var(--muted);
+    line-height: 1.9;
 }
 
 .game-card {
@@ -128,8 +140,86 @@ button {
     font-size: 27px;
 }
 
+.player-section {
+    display: grid;
+    gap: 12px;
+    margin-top: 28px;
+}
+
+.player-section label,
+.game-area label {
+    display: block;
+    color: var(--text);
+    font-weight: 700;
+    font-size: 14px;
+}
+
+.player-row,
+.guess-row {
+    display: flex;
+    gap: 10px;
+}
+
+.player-row input,
+.guess-row input {
+    min-width: 0;
+    width: 100%;
+    padding: 12px;
+    color: var(--text);
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    outline: none;
+}
+
+.player-row input:focus,
+.guess-row input:focus {
+    border-color: var(--purple);
+}
+
+.primary-btn {
+    padding: 12px 18px;
+    border: none;
+    border-radius: 12px;
+    color: white;
+    font-weight: 700;
+    white-space: nowrap;
+    background: linear-gradient(135deg, var(--purple), #6366f1);
+    transition: filter 0.2s, transform 0.2s;
+}
+
+.primary-btn:hover:not(:disabled) {
+    filter: brightness(1.15);
+    transform: translateY(-1px);
+}
+
+.hidden {
+    display: none !important;
+}
+
+.game-panel {
+    margin-top: 25px;
+}
+
+.welcome {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
+    padding: 14px;
+    border: 1px solid #8b5cf644;
+    border-radius: 12px;
+    background: #8b5cf614;
+}
+
+.welcome strong {
+    color: #c4b5fd;
+    overflow-wrap: anywhere;
+}
+
 .section-label {
     margin-top: 28px;
+    color: var(--muted);
     font-size: 14px;
 }
 
@@ -160,7 +250,8 @@ button {
     color: var(--muted);
 }
 
-.level:hover, .level.active {
+.level:hover,
+.level.active {
     border-color: var(--purple);
     background: #8b5cf622;
     transform: translateY(-2px);
@@ -177,8 +268,9 @@ button {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    color: var(--muted);
+    gap: 10px;
     margin-bottom: 22px;
+    color: var(--muted);
 }
 
 .attempts strong {
@@ -186,61 +278,23 @@ button {
     font-size: 25px;
 }
 
-.game-area label {
-    display: block;
-    margin-bottom: 8px;
-    font-size: 14px;
-}
-
 .guess-row {
-    display: flex;
-    gap: 10px;
-}
-
-.guess-row input {
-    min-width: 0;
-    width: 100%;
-    padding: 12px;
-    color: white;
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    outline: none;
-}
-
-.guess-row input:focus {
-    border-color: var(--purple);
-}
-
-.primary-btn {
-    padding: 12px 18px;
-    border: none;
-    border-radius: 12px;
-    color: white;
-    font-weight: 700;
-    white-space: nowrap;
-    background: linear-gradient(135deg, #8b5cf6, #6366f1);
-}
-
-.primary-btn:hover {
-    filter: brightness(1.15);
-}
-
-button:disabled {
-    cursor: not-allowed;
-    opacity: 0.5;
+    margin-top: 8px;
 }
 
 .message {
     min-height: 28px;
     margin: 18px 0;
     color: #c4b5fd;
+    line-height: 1.8;
     text-align: center;
+    overflow-wrap: anywhere;
 }
 
-.restart-btn {
+.restart-btn,
+.change-name-btn {
     display: block;
-    margin: auto;
+    margin: 12px auto 0;
     padding: 8px 15px;
     color: var(--muted);
     background: transparent;
@@ -248,9 +302,14 @@ button:disabled {
     border-radius: 10px;
 }
 
-.restart-btn:hover {
+.restart-btn:hover:not(:disabled),
+.change-name-btn:hover {
     color: white;
     border-color: var(--purple);
+}
+
+.change-name-btn {
+    margin-top: 20px;
 }
 
 footer {
@@ -273,6 +332,15 @@ footer {
         padding: 18px;
     }
 
+    .player-row,
+    .guess-row {
+        flex-direction: column;
+    }
+
+    .primary-btn {
+        width: 100%;
+    }
+
     .levels {
         gap: 7px;
     }
@@ -284,43 +352,4 @@ footer {
     .game-area {
         padding: 15px;
     }
-
-    .guess-row {
-        flex-direction: column;
-    }
-
-    .primary-btn {
-        width: 100%;
-    }
 }
-
-
-.player-section {
-    display: grid;
-    gap: 12px;
-    margin-bottom: 25px;
-}
-
-.player-section label {
-    color: var(--text);
-    font-weight: 700;
-}
-
-.player-section input {
-    width: 100%;
-    padding: 13px;
-    color: var(--text);
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    outline: none;
-}
-
-.player-section input:focus {
-    border-color: var(--purple);
-}
-
-.player-section .primary-btn {
-    width: 100%;
-}
-
