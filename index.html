@@ -1,97 +1,116 @@
-
+```html
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NEXUS GAMES | تحدي الأرقام</title>
+    <title>NEXUS GAMES | لعبة التخمين</title>
     <link rel="stylesheet" href="style.css">
+    <script src="script.js" defer></script>
 </head>
 <body>
 
     <header class="navbar">
-        <a href="#" class="logo">
-            <span class="logo-icon">N</span>
-            NEXUS GAMES
-        </a>
-        <span class="status">● جاهز للعب</span>
+        <div class="logo">NEXUS <span>GAMES</span></div>
+        <div class="status">● جاهز للعب</div>
     </header>
 
     <main class="container">
         <section class="hero">
-            <span class="tag">YOUR NEXT CHALLENGE</span>
-            <h1>اختبر ذكاءك،<br><span>وتحدَّ الأرقام!</span></h1>
-            <p>خمّن الرقم الصحيح، واختر مستوى الصعوبة الذي يناسبك.</p>
+            <p class="eyebrow">مرحبًا بك في عالم التحدي</p>
+            <h1>اختبر ذكاءك <span>وتحدَّ نفسك</span></h1>
+            <p class="subtitle">
+                خمّن الرقم السري قبل انتهاء محاولاتك.
+                هل تستطيع الفوز؟
+            </p>
         </section>
 
         <section class="game-card">
-            
-<div class="player-section">
-    <label for="playerName">وش اسمك يا بطل؟</label>
-    <input
-        id="playerName"
-        type="text"
-        placeholder="اكتب اسمك هنا"
-        maxlength="20"
-    >
-    <button id="startBtn" class="primary-btn">ابدأ اللعب</button>
-</div>
 
-            <div class="card-heading">
-                <div>
-                    <span class="eyebrow">NUMBER CHALLENGE</span>
-                    <h2>لعبة تخمين الأرقام</h2>
-                </div>
-                <div class="target-icon">🎯</div>
-            </div>
+            <form id="playerForm">
+                <h2>قبل أن نبدأ</h2>
+                <p class="muted">اكتب اسمك للدخول إلى اللعبة</p>
 
-            <p class="section-label">اختر مستوى الصعوبة</p>
+                <label for="playerName">اسم اللاعب</label>
+                <input
+                    type="text"
+                    id="playerName"
+                    placeholder="اكتب اسمك هنا"
+                    maxlength="30"
+                    autocomplete="given-name"
+                    required
+                >
 
-            <div class="levels">
-                <button class="level active" data-level="easy">
-                    <span>⚡</span>
-                    <strong>سهل</strong>
-                    <small>1 - 10</small>
+                <button type="submit" id="startBtn" class="primary-btn">
+                    ابدأ اللعب
                 </button>
+            </form>
 
-                <button class="level" data-level="medium">
-                    <span>🎯</span>
-                    <strong>متوسط</strong>
-                    <small>1 - 50</small>
-                </button>
-
-                <button class="level" data-level="hard">
-                    <span>🔥</span>
-                    <strong>صعب</strong>
-                    <small>1 - 100</small>
-                </button>
-            </div>
-
-            <div class="game-area">
-                <div class="attempts">
-                    <span>المحاولات المتبقية</span>
-                    <strong id="attempts">3</strong>
+            <div id="gamePanel" class="hidden">
+                <div class="welcome">
+                    <h2>أهلًا بك يا <span id="welcomeName"></span> 👋</h2>
+                    <p class="muted">اختر المستوى وابدأ التخمين</p>
                 </div>
 
-                <label for="guess">اكتب تخمينك</label>
-                <div class="guess-row">
-                    <input id="guess" type="number" placeholder="؟" min="1" max="10">
-                    <button id="guessBtn" class="primary-btn">خمّن الآن</button>
+                <div class="levels">
+                    <button type="button" class="level active" data-level="easy">
+                        سهل <small>1–10</small>
+                    </button>
+                    <button type="button" class="level" data-level="medium">
+                        متوسط <small>1–50</small>
+                    </button>
+                    <button type="button" class="level" data-level="hard">
+                        صعب <small>1–100</small>
+                    </button>
                 </div>
+
+                <div class="stats">
+                    <div class="stat-box">
+                        <span>المحاولات المتبقية</span>
+                        <strong id="attempts">3</strong>
+                    </div>
+                    <div class="stat-box">
+                        <span>المستوى الحالي</span>
+                        <strong id="currentLevelText">سهل</strong>
+                    </div>
+                </div>
+
+                <form id="guessForm">
+                    <label for="guess">اكتب الرقم الذي تتوقعه</label>
+                    <input
+                        type="number"
+                        id="guess"
+                        placeholder="من 1 إلى 10"
+                        min="1"
+                        max="10"
+                        step="1"
+                        required
+                    >
+                    <button type="submit" id="guessBtn" class="primary-btn">
+                        تأكيد التخمين
+                    </button>
+                </form>
 
                 <p id="message" class="message" aria-live="polite">
-                    اختر رقمًا وابدأ التحدي!
+                    بالتوفيق! خمّن الرقم.
                 </p>
 
-                <button id="restartBtn" class="restart-btn">↻ لعبة جديدة</button>
+                <div class="actions">
+                    <button type="button" id="restartBtn" class="secondary-btn">
+                        إعادة اللعب
+                    </button>
+                    <button type="button" id="changeNameBtn" class="secondary-btn">
+                        تغيير الاسم
+                    </button>
+                </div>
             </div>
         </section>
 
         <footer>
-            <p>© 2026 NEXUS GAMES — العب، تحدَّ، واستمتع.</p>
+            NEXUS GAMES © 2026 — استمتع بالتحدي
         </footer>
     </main>
 
-    <script src="script.js"></script>
 </body>
 </html>
+```
