@@ -1,0 +1,85 @@
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NEXUS GAMES | تحدي الأرقام</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header class="navbar">
+        <a href="#" class="logo">
+            <span class="logo-icon">N</span>
+            NEXUS GAMES
+        </a>
+        <span class="status">● جاهز للعب</span>
+    </header>
+
+    <main class="container">
+        <section class="hero">
+            <span class="tag">YOUR NEXT CHALLENGE</span>
+            <h1>اختبر ذكاءك،<br><span>وتحدَّ الأرقام!</span></h1>
+            <p>خمّن الرقم الصحيح، واختر مستوى الصعوبة الذي يناسبك.</p>
+        </section>
+
+        <section class="game-card">
+            <div class="card-heading">
+                <div>
+                    <span class="eyebrow">NUMBER CHALLENGE</span>
+                    <h2>لعبة تخمين الأرقام</h2>
+                </div>
+                <div class="target-icon">🎯</div>
+            </div>
+
+            <p class="section-label">اختر مستوى الصعوبة</p>
+
+            <div class="levels">
+                <button class="level active" data-level="easy">
+                    <span>⚡</span>
+                    <strong>سهل</strong>
+                    <small>1 - 10</small>
+                </button>
+
+                <button class="level" data-level="medium">
+                    <span>🎯</span>
+                    <strong>متوسط</strong>
+                    <small>1 - 50</small>
+                </button>
+
+                <button class="level" data-level="hard">
+                    <span>🔥</span>
+                    <strong>صعب</strong>
+                    <small>1 - 100</small>
+                </button>
+            </div>
+
+            <div class="game-area">
+                <div class="attempts">
+                    <span>المحاولات المتبقية</span>
+                    <strong id="attempts">3</strong>
+                </div>
+
+                <label for="guess">اكتب تخمينك</label>
+                <div class="guess-row">
+                    <input id="guess" type="number" placeholder="؟" min="1" max="10">
+                    <button id="guessBtn" class="primary-btn">خمّن الآن</button>
+                </div>
+
+                <p id="message" class="message" aria-live="polite">
+                    اختر رقمًا وابدأ التحدي!
+                </p>
+
+                <button id="restartBtn" class="restart-btn">↻ لعبة جديدة</button>
+            </div>
+        </section>
+
+        <footer>
+            <p>© 2026 NEXUS GAMES — العب، تحدَّ، واستمتع.</p>
+        </footer>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
