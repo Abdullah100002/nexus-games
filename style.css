@@ -1,4 +1,3 @@
-
 @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap');
 
 :root {
@@ -293,5 +292,35 @@ footer {
     .primary-btn {
         width: 100%;
     }
+}
+
+
+.player-section {
+    display: grid;
+    gap: 12px;
+    margin-bottom: 25px;
+}
+
+.player-section label {
+    color: var(--text);
+    font-weight: 700;
+}
+
+.player-section input {
+    width: 100%;
+    padding: 13px;
+    color: var(--text);
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    outline: none;
+}
+
+.player-section input:focus {
+    border-color: var(--purple);
+}
+
+.player-section .primary-btn {
+    width: 100%;
 }
 
