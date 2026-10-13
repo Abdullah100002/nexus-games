@@ -1,3 +1,7 @@
+const playerNameInput = document.querySelector("#playerName");
+const startButton = document.querySelector("#startBtn");
+
+let playerName = "";
 
 const levels = {
     easy: { max: 10, attempts: 3 },
@@ -17,7 +21,38 @@ let secretNumber;
 let attemptsLeft;
 let gameOver = false;
 
+
 function startGame(level = currentLevel) {
+    currentLevel = level;
+
+    const settings = levels[currentLevel];
+    secretNumber = Math.floor(Math.random() * settings.max) + 1;
+    attemptsLeft = settings.attempts;
+    gameOver = false;
+
+    attemptsDisplay.textContent = attemptsLeft;
+    guessInput.value = "";
+    guessInput.min = 1;
+    guessInput.max = settings.max;
+    guessInput.placeholder = `1 - ${settings.max}`;
+
+    guessInput.disabled = false;
+    guessButton.disabled = false;
+
+    message.textContent = playerName
+        ? `بالتوفيق يا ${playerName}! خمّن الرقم.`
+        : "اختر رقمًا وابدأ التحدي!";
+
+    levelButtons.forEach(button => {
+        button.classList.toggle(
+            "active",
+            button.dataset.level === currentLevel
+        );
+    });
+
+    guessInput.focus();
+}
+
     currentLevel = level;
 
     const settings = levels[currentLevel];
@@ -44,7 +79,7 @@ function startGame(level = currentLevel) {
     });
 
     guessInput.focus();
-}
+
 
 function checkGuess() {
     if (gameOver) return;
@@ -110,3 +145,16 @@ restartButton.addEventListener("click", () => {
 });
 
 startGame();
+
+startButton.addEventListener("click", () => {
+    const name = playerNameInput.value.trim();
+
+    if (!name) {
+        message.textContent = "اكتب اسمك أولًا يا بطل!";
+        playerNameInput.focus();
+        return;
+    }
+
+    playerName = name;
+    startGame(currentLevel);
+});
