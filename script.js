@@ -1,173 +1,218 @@
+```javascript
+"use strict";
 
-const levels = {
-    easy: { max: 10, attempts: 3 },
-    medium: { max: 50, attempts: 5 },
-    hard: { max: 100, attempts: 7 }
-};
+document.addEventListener("DOMContentLoaded", function () {
+    const levels = {
+        easy: { max: 10, attempts: 3, name: "سهل" },
+        medium: { max: 50, attempts: 5, name: "متوسط" },
+        hard: { max: 100, attempts: 7, name: "صعب" }
+    };
 
-const playerForm = document.querySelector("#playerForm");
-const playerNameInput = document.querySelector("#playerName");
-const gamePanel = document.querySelector("#gamePanel");
-const welcomeName = document.querySelector("#welcomeName");
-
-const levelButtons = document.querySelectorAll(".level");
-const guessInput = document.querySelector("#guess");
-const guessButton = document.querySelector("#guessBtn");
-const restartButton = document.querySelector("#restartBtn");
-const changeNameButton = document.querySelector("#changeNameBtn");
-
-const attemptsDisplay = document.querySelector("#attempts");
-const message = document.querySelector("#message");
-
-let playerName = "";
-let currentLevel = "easy";
-let secretNumber = 0;
-let attemptsLeft = 0;
-let gameOver = true;
-
-function startGame(level = currentLevel) {
-    currentLevel = level;
-
-    const settings = levels[currentLevel];
-
-    secretNumber = Math.floor(Math.random() * settings.max) + 1;
-    attemptsLeft = settings.attempts;
-    gameOver = false;
-
-    attemptsDisplay.textContent = attemptsLeft;
-
-    guessInput.value = "";
-    guessInput.min = 1;
-    guessInput.max = settings.max;
-    guessInput.placeholder = `من 1 إلى ${settings.max}`;
-    guessInput.disabled = false;
-
-    guessButton.disabled = false;
-    restartButton.disabled = false;
-
-    message.textContent = `بالتوفيق يا ${playerName}! خمّن الرقم.`;
-
-    levelButtons.forEach(button => {
-        button.classList.toggle(
-            "active",
-            button.dataset.level === currentLevel
-        );
-    });
-
-    guessInput.focus();
-}
-
-function finishGame() {
-    gameOver = true;
-    guessInput.disabled = true;
-    guessButton.disabled = true;
-}
-
-function checkGuess() {
-    if (gameOver) {
-        return;
-    }
-
-    const rawGuess = guessInput.value.trim();
-    const guess = Number(rawGuess);
-    const max = levels[currentLevel].max;
+    const playerForm = document.getElementById("playerForm");
+    const playerNameInput = document.getElementById("playerName");
+    const gamePanel = document.getElementById("gamePanel");
+    const welcomeName = document.getElementById("welcomeName");
+    const guessForm = document.getElementById("guessForm");
+    const guessInput = document.getElementById("guess");
+    const attemptsDisplay = document.getElementById("attempts");
+    const currentLevelText = document.getElementById("currentLevelText");
+    const message = document.getElementById("message");
+    const levelButtons = document.querySelectorAll(".level");
+    const restartButton = document.getElementById("restartBtn");
+    const changeNameButton = document.getElementById("changeNameBtn");
 
     if (
-        rawGuess === "" ||
-        !Number.isInteger(guess) ||
-        guess < 1 ||
-        guess > max
+        !playerForm ||
+        !playerNameInput ||
+        !gamePanel ||
+        !welcomeName ||
+        !guessForm ||
+        !guessInput ||
+        !attemptsDisplay ||
+        !currentLevelText ||
+        !message ||
+        !restartButton ||
+        !changeNameButton
     ) {
-        message.textContent = `يا ${playerName}، أدخل عددًا صحيحًا من 1 إلى ${max}.`;
+        console.error("تأكد من أن index.html يحتوي على عناصر اللعبة المطلوبة.");
         return;
     }
 
-    attemptsLeft--;
-    attemptsDisplay.textContent = attemptsLeft;
+    let playerName = "";
+    let currentLevel = "easy";
+    let secretNumber = 0;
+    let attemptsLeft = 0;
+    let gameOver = true;
 
-    if (guess === secretNumber) {
-        message.textContent = `🎉 أحسنت يا ${playerName}! خمنت الرقم الصحيح ${secretNumber}.`;
-        finishGame();
-        return;
-    }
+    function startGame(level) {
+        currentLevel = levels[level] ? level : "easy";
 
-    if (attemptsLeft === 0) {
-        message.textContent = `انتهت المحاولات يا ${playerName}! الرقم الصحيح هو ${secretNumber}.`;
-        finishGame();
-        return;
-    }
+        const settings = levels[currentLevel];
 
-    if (guess < secretNumber) {
-        message.textContent = `⬆️ رقمك أصغر من الرقم السري يا ${playerName}. جرّب أكبر!`;
-    } else {
-        message.textContent = `⬇️ رقمك أكبر من الرقم السري يا ${playerName}. جرّب أصغر!`;
-    }
+        secretNumber = Math.floor(Math.random() * settings.max) + 1;
+        attemptsLeft = settings.attempts;
+        gameOver = false;
 
-    guessInput.value = "";
-    guessInput.focus();
-}
+        attemptsDisplay.textContent = attemptsLeft;
+        currentLevelText.textContent = settings.name;
 
-playerForm.addEventListener("submit", event => {
-    event.preventDefault();
+        guessInput.value = "";
+        guessInput.min = "1";
+        guessInput.max = String(settings.max);
+        guessInput.placeholder = "من 1 إلى " + settings.max;
+        guessInput.disabled = false;
 
-    const name = playerNameInput.value.trim();
+        const guessButton = guessForm.querySelector('button[type="submit"]');
 
-    if (!name) {
-        playerNameInput.setCustomValidity("اكتب اسمك أولًا.");
-        playerNameInput.reportValidity();
-        return;
-    }
-
-    playerNameInput.setCustomValidity("");
-
-    playerName = name;
-
-    welcomeName.textContent = playerName;
-    playerForm.classList.add("hidden");
-    gamePanel.classList.remove("hidden");
-
-    startGame("easy");
-});
-
-playerNameInput.addEventListener("input", () => {
-    playerNameInput.setCustomValidity("");
-});
-
-levelButtons.forEach(button => {
-    button.addEventListener("click", () => {
-        if (playerName) {
-            startGame(button.dataset.level);
+        if (guessButton) {
+            guessButton.disabled = false;
         }
-    });
-});
 
-guessButton.addEventListener("click", checkGuess);
+        restartButton.disabled = false;
 
-guessInput.addEventListener("keydown", event => {
-    if (event.key === "Enter") {
-        checkGuess();
+        message.textContent =
+            "بالتوفيق يا " + playerName + "! خمّن الرقم.";
+
+        levelButtons.forEach(function (button) {
+            button.classList.toggle(
+                "active",
+                button.dataset.level === currentLevel
+            );
+        });
+
+        guessInput.focus();
     }
-});
 
-restartButton.addEventListener("click", () => {
-    startGame(currentLevel);
-});
+    function finishGame() {
+        gameOver = true;
+        guessInput.disabled = true;
 
-changeNameButton.addEventListener("click", () => {
-    gameOver = true;
+        const guessButton = guessForm.querySelector('button[type="submit"]');
 
-    playerName = "";
-    playerNameInput.value = "";
+        if (guessButton) {
+            guessButton.disabled = true;
+        }
+    }
 
-    guessInput.value = "";
+    function checkGuess() {
+        if (gameOver) {
+            return;
+        }
+
+        const rawGuess = guessInput.value.trim();
+        const guess = Number(rawGuess);
+        const max = levels[currentLevel].max;
+
+        if (
+            rawGuess === "" ||
+            !Number.isInteger(guess) ||
+            guess < 1 ||
+            guess > max
+        ) {
+            message.textContent =
+                "أدخل عددًا صحيحًا من 1 إلى " + max + ".";
+            return;
+        }
+
+        attemptsLeft--;
+        attemptsDisplay.textContent = attemptsLeft;
+
+        if (guess === secretNumber) {
+            message.textContent =
+                "أحسنت يا " + playerName +
+                "! الرقم الصحيح هو " + secretNumber + ".";
+            finishGame();
+            return;
+        }
+
+        if (attemptsLeft === 0) {
+            message.textContent =
+                "انتهت المحاولات يا " + playerName +
+                "! الرقم الصحيح هو " + secretNumber + ".";
+            finishGame();
+            return;
+        }
+
+        if (guess < secretNumber) {
+            message.textContent =
+                "رقمك أصغر من الرقم السري. جرّب رقمًا أكبر!";
+        } else {
+            message.textContent =
+                "رقمك أكبر من الرقم السري. جرّب رقمًا أصغر!";
+        }
+
+        guessInput.value = "";
+        guessInput.focus();
+    }
+
+    playerForm.addEventListener("submit", function (event) {
+        event.preventDefault();
+
+        const name = playerNameInput.value.trim();
+
+        if (name === "") {
+            message.textContent = "اكتب اسمك أولًا.";
+            playerNameInput.focus();
+            return;
+        }
+
+        playerName = name;
+        welcomeName.textContent = playerName;
+
+        playerForm.classList.add("hidden");
+        gamePanel.classList.remove("hidden");
+
+        startGame("easy");
+    });
+
+    guessForm.addEventListener("submit", function (event) {
+        event.preventDefault();
+        checkGuess();
+    });
+
+    levelButtons.forEach(function (button) {
+        button.addEventListener("click", function () {
+            if (playerName !== "") {
+                startGame(button.dataset.level);
+            }
+        });
+    });
+
+    restartButton.addEventListener("click", function () {
+        startGame(currentLevel);
+    });
+
+    changeNameButton.addEventListener("click", function () {
+        gameOver = true;
+        playerName = "";
+
+        playerForm.reset();
+        guessForm.reset();
+
+        guessInput.disabled = true;
+
+        const guessButton = guessForm.querySelector('button[type="submit"]');
+
+        if (guessButton) {
+            guessButton.disabled = true;
+        }
+
+        restartButton.disabled = true;
+
+        gamePanel.classList.add("hidden");
+        playerForm.classList.remove("hidden");
+
+        playerNameInput.focus();
+    });
+
     guessInput.disabled = true;
-    guessButton.disabled = true;
+
+    const initialGuessButton = guessForm.querySelector('button[type="submit"]');
+
+    if (initialGuessButton) {
+        initialGuessButton.disabled = true;
+    }
+
     restartButton.disabled = true;
-
-    gamePanel.classList.add("hidden");
-    playerForm.classList.remove("hidden");
-
-    message.textContent = "اكتب اسمك واضغط ابدأ اللعب.";
-
-    playerNameInput.focus();
 });
+```
